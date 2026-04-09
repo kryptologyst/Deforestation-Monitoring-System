@@ -1,0 +1,73 @@
+# Spatial configuration
+spatial:
+  # Coordinate Reference System
+  crs: "EPSG:4326"
+  projected_crs: "EPSG:3857"
+  
+  # Region of interest (example: Amazon rainforest)
+  roi:
+    bounds:
+      west: -80.0
+      east: -40.0
+      south: -20.0
+      north: 10.0
+    name: "Amazon Basin"
+  
+  # Grid configuration for spatial analysis
+  grid:
+    resolution: 0.01  # degrees
+    buffer_distance: 0.05  # degrees
+  
+  # Spatial features
+  features:
+    # Distance calculations
+    distance_metrics:
+      - "euclidean"
+      - "haversine"
+    
+    # Spatial lag features
+    spatial_lags:
+      - 1  # nearest neighbors
+      - 3  # 3rd order neighbors
+    
+    # Buffer analysis
+    buffers:
+      - 0.01  # ~1km
+      - 0.05  # ~5km
+      - 0.1   # ~10km
+
+# Remote sensing configuration
+remote_sensing:
+  # Satellite data sources
+  satellites:
+    landsat:
+      bands: ["B2", "B3", "B4", "B5", "B6", "B7"]  # Blue, Green, Red, NIR, SWIR1, SWIR2
+      resolution: 30  # meters
+    sentinel:
+      bands: ["B2", "B3", "B4", "B8", "B11", "B12"]  # Blue, Green, Red, NIR, SWIR1, SWIR2
+      resolution: 10  # meters
+  
+  # Vegetation indices
+  indices:
+    ndvi:
+      formula: "(NIR - Red) / (NIR + Red)"
+      range: [-1, 1]
+    evi:
+      formula: "2.5 * (NIR - Red) / (NIR + 6 * Red - 7.5 * Blue + 1)"
+      range: [-1, 1]
+    savi:
+      formula: "(NIR - Red) / (NIR + Red + L) * (1 + L)"
+      l_factor: 0.5
+      range: [-1, 1]
+  
+  # Cloud and shadow masking
+  masking:
+    cloud_threshold: 0.2
+    shadow_threshold: 0.1
+    snow_threshold: 0.1
+  
+  # Temporal analysis
+  temporal:
+    time_window: 30  # days
+    min_observations: 3
+    max_cloud_cover: 0.3
